@@ -29,3 +29,15 @@ First Boot:
   systemctl start /dev/zram0
   
   systemctl enablde greetd.service
+
+Potential niri config changes:
+
+spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+
+spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"
+
+spawn-at-startup "swayidle" "-w" \
+    "timeout" "300" "qs -c noctalia-shell ipc call lockScreen lock" \
+    "timeout" "600" "niri msg action power-off-monitors" \
+    "resume" "niri msg action power-on-monitors" \
+    "before-sleep" "qs -c noctalia-shell ipc call lockScreen lock"
